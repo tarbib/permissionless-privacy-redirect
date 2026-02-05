@@ -1,12 +1,15 @@
-// Domain to Display Name mapping
+// Domain to Display Name mapping (must include every domain in DEFAULT_MAP for correct grouping)
 const SITE_DISPLAY_NAMES = {
   "www.youtube.com": "YouTube",
   "twitter.com": "Twitter/X",
   "x.com": "Twitter/X",
   "www.reddit.com": "Reddit",
   "instagram.com": "Instagram",
+  "www.instagram.com": "Instagram",
   "tiktok.com": "TikTok",
   "www.tiktok.com": "TikTok",
+  "vm.tiktok.com": "TikTok",
+  "vt.tiktok.com": "TikTok",
   "stackoverflow.com": "Stack Overflow",
   "en.wikipedia.org": "Wikipedia",
   "medium.com": "Medium",
@@ -15,9 +18,13 @@ const SITE_DISPLAY_NAMES = {
   "www.imdb.com": "IMDB",
   "translate.google.com": "Google Translate",
   "fandom.com": "Fandom",
+  "www.fandom.com": "Fandom",
   "genius.com": "Genius",
+  "www.genius.com": "Genius",
   "bandcamp.com": "Bandcamp",
-  "github.com": "GitHub"
+  "www.bandcamp.com": "Bandcamp",
+  "github.com": "GitHub",
+  "www.github.com": "GitHub"
 };
 
 // Group related domains (like www and non-www versions)
@@ -40,14 +47,18 @@ const DOMAIN_GROUPS = {
   "GitHub": ["github.com", "www.github.com"]
 };
 
+// Must match service_worker.js DEFAULT_REDIRECT_MAP so customMap values are correct for all DOMAIN_GROUPS
 const DEFAULT_MAP = {
   "www.youtube.com": "https://farside.link/invidious",
   "twitter.com": "https://farside.link/nitter",
   "x.com": "https://farside.link/nitter",
   "www.reddit.com": "https://farside.link/libreddit",
   "instagram.com": "https://farside.link/proxigram",
+  "www.instagram.com": "https://farside.link/proxigram",
   "tiktok.com": "https://farside.link/proxitok",
   "www.tiktok.com": "https://farside.link/proxitok",
+  "vm.tiktok.com": "https://farside.link/proxitok",
+  "vt.tiktok.com": "https://farside.link/proxitok",
   "stackoverflow.com": "https://farside.link/anonymousoverflow",
   "en.wikipedia.org": "https://farside.link/wikiless",
   "medium.com": "https://farside.link/scribe",
@@ -56,9 +67,13 @@ const DEFAULT_MAP = {
   "www.imdb.com": "https://farside.link/libremdb",
   "translate.google.com": "https://farside.link/simplytranslate",
   "fandom.com": "https://farside.link/breezewiki",
+  "www.fandom.com": "https://farside.link/breezewiki",
   "genius.com": "https://farside.link/dumb",
+  "www.genius.com": "https://farside.link/dumb",
   "bandcamp.com": "https://farside.link/tent",
-  "github.com": "https://farside.link/gothub"
+  "www.bandcamp.com": "https://farside.link/tent",
+  "github.com": "https://farside.link/gothub",
+  "www.github.com": "https://farside.link/gothub"
 };
 
 // Services organized by category with updated mappings and reordered by popularity
@@ -107,8 +122,9 @@ chrome.storage.sync.get(["customMap"], (res) => {
   const processedGroups = new Set();
   
   // Process domains by their group name
-  for (const [domain, redirect] of Object.entries(DEFAULT_MAP)) {
+  for (const [domain] of Object.entries(DEFAULT_MAP)) {
     const displayName = SITE_DISPLAY_NAMES[domain];
+    if (displayName == null) continue;
     
     // Skip if this group is already processed
     if (processedGroups.has(displayName)) continue;
@@ -116,9 +132,10 @@ chrome.storage.sync.get(["customMap"], (res) => {
     
     // Get all domains in this group
     const domains = DOMAIN_GROUPS[displayName];
+    if (!domains?.length) continue;
     
     // Check if any domain in the group is enabled
-    const groupEnabled = domains.some(d => customMap[d] !== "");
+    const groupEnabled = domains.some(d => customMap[d] !== "" && customMap[d] != null);
     
     const row = document.createElement("label");
     row.className = "toggle-row";

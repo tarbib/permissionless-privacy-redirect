@@ -34,21 +34,35 @@ const DEFAULT_REDIRECT_MAP = {
 
 let userRedirectMap = { ...DEFAULT_REDIRECT_MAP };
 
-// Initialize settings from storage
-chrome.storage.sync.get(["enabled", "customMap"], (res) => {
-  isRedirectionEnabled = res.enabled ?? true;
-  if (res.customMap) {
-    userRedirectMap = { ...DEFAULT_REDIRECT_MAP, ...res.customMap };
-  }
-});
+// Block redirects until we've loaded saved settings (avoids redirecting with defaults when user had sites disabled).
+// No added delay when redirect is on: we don't wait inside the listener; once settingsLoaded is true, redirect is immediate.
+// Alternatives considered: (1) Async storage.get inside listener then redirect in callback → would cause visible flash/delay.
+// (2) Synchronous storage → not available in Chrome APIs. (3) Warm-up (e.g. onStartup) → could load settings earlier so first nav is rarely missed.
+let settingsLoaded = false;
+
+function loadSettingsFromStorage() {
+  chrome.storage.sync.get(["enabled", "customMap"], (res) => {
+    isRedirectionEnabled = res.enabled ?? true;
+    if (res.customMap) {
+      userRedirectMap = { ...DEFAULT_REDIRECT_MAP, ...res.customMap };
+    }
+    settingsLoaded = true;
+  });
+}
+
+loadSettingsFromStorage();
+
+// Warm-up: if the worker runs at browser startup, load settings early so first navigation can redirect
+chrome.runtime.onStartup.addListener(loadSettingsFromStorage);
 
 // Listen for options updates from the options page
 chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
   if (message.type === "updateSettings") {
     isRedirectionEnabled = message.enabled !== false; // Default to true if not specified
     
-    if (message.updatedMap) {
-      userRedirectMap = { ...DEFAULT_REDIRECT_MAP, ...message.updatedMap };
+    const updatedMap = message.updatedMap;
+    if (typeof updatedMap === "object" && updatedMap !== null) {
+      userRedirectMap = { ...DEFAULT_REDIRECT_MAP, ...updatedMap };
     }
     
     console.log("Settings updated:", { 
@@ -69,6 +83,9 @@ chrome.webNavigation.onBeforeNavigate.addListener(
   (details) => {
     // Only process main frame navigations (not iframes, etc)
     if (details.frameId !== 0) return;
+    
+    // Don't redirect until we've loaded saved settings (prevents redirect when site was disabled after cold start)
+    if (!settingsLoaded) return;
     
     // Global redirect toggle check
     if (!isRedirectionEnabled) {
@@ -106,7 +123,7 @@ chrome.webNavigation.onBeforeNavigate.addListener(
         redirectBase = "https://farside.link/proxitok";
       }
 
-      if (!redirectBase || redirectBase.trim() === "") {
+      if (typeof redirectBase !== "string" || redirectBase.trim() === "") {
         console.log("No redirect found for:", hostname);
         return;
       }
@@ -129,10 +146,14 @@ chrome.storage.onChanged.addListener((changes) => {
     console.log("Global redirect setting changed:", isRedirectionEnabled);
   }
   if (changes.customMap) {
-    userRedirectMap = { ...DEFAULT_REDIRECT_MAP, ...changes.customMap.newValue };
+    const newMap = changes.customMap.newValue;
+    userRedirectMap =
+      typeof newMap === "object" && newMap !== null
+        ? { ...DEFAULT_REDIRECT_MAP, ...newMap }
+        : { ...DEFAULT_REDIRECT_MAP };
     console.log("Custom map updated, enabled domains:", 
       Object.entries(userRedirectMap)
-        .filter(([_, value]) => value !== "")
+        .filter(([_, value]) => value !== "" && value != null)
         .length
     );
   }
