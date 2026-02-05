@@ -134,8 +134,8 @@ chrome.storage.sync.get(["customMap"], (res) => {
     const domains = DOMAIN_GROUPS[displayName];
     if (!domains?.length) continue;
     
-    // Check if any domain in the group is enabled
-    const groupEnabled = domains.some(d => customMap[d] !== "" && customMap[d] != null);
+    // Show checked if any domain in group is effectively enabled (same logic as service worker: missing key = use default = enabled)
+    const groupEnabled = domains.some(d => (customMap[d] ?? DEFAULT_MAP[d]) !== "");
     
     const row = document.createElement("label");
     row.className = "toggle-row";
