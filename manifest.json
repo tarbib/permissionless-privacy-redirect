@@ -1,59 +1,44 @@
 {
-    "manifest_version": 3,
-    "name": "PrivacyRedirect+",
-    "version": "1.0.1",
-    "description": "Automatically redirects visits from known platforms to open-source, privacy-friendly alternatives via farside.link.",
-    "permissions": ["webNavigation", "storage"],
-    "host_permissions": [
-      "*://www.reddit.com/*",
-      "*://twitter.com/*",
-      "*://x.com/*",
-      "*://www.youtube.com/*",
-      "*://instagram.com/*",
-      "*://www.instagram.com/*",
-      "*://tiktok.com/*",
-      "*://www.tiktok.com/*",
-      "*://vm.tiktok.com/*",
-      "*://vt.tiktok.com/*",
-      "*://*.tiktok.com/*",
-      "*://medium.com/*",
-      "*://translate.google.com/*",
-      "*://imgur.com/*",
-      "*://en.wikipedia.org/*",
-      "*://www.imdb.com/*",
-      "*://quora.com/*",
-      "*://stackoverflow.com/*",
-      "*://fandom.com/*",
-      "*://www.fandom.com/*",
-      "*://*.fandom.com/*",
-      "*://genius.com/*",
-      "*://www.genius.com/*",
-      "*://bandcamp.com/*",
-      "*://www.bandcamp.com/*",
-      "*://github.com/*",
-      "*://www.github.com/*"
-    ],
-    "background": {
-      "service_worker": "service_worker.js",
-      "type": "module"
-    },
-    "options_page": "options.html",
-    "icons": {
+  "manifest_version": 3,
+  "name": "PrivacyRedirect+",
+  "version": "2.0.0",
+  "description": "Redirects YouTube, Reddit, X and more to privacy-friendly frontends. No install-time permissions: you grant each site when you turn it on.",
+  "permissions": ["declarativeNetRequestWithHostAccess"],
+  "optional_host_permissions": [
+    "*://youtube.com/*",
+    "*://www.youtube.com/*",
+    "*://m.youtube.com/*",
+    "*://youtu.be/*",
+    "*://reddit.com/*",
+    "*://www.reddit.com/*",
+    "*://old.reddit.com/*",
+    "*://x.com/*",
+    "*://www.x.com/*",
+    "*://twitter.com/*",
+    "*://www.twitter.com/*",
+    "*://medium.com/*",
+    "*://*.fandom.com/*",
+    "*://imgur.com/*",
+    "*://i.imgur.com/*",
+    "*://stackoverflow.com/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [{ "id": "redirects", "enabled": true, "path": "rules.json" }]
+  },
+  "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
     "48": "icons/icon48.png",
-    "64": "icons/icon64.png",
     "128": "icons/icon128.png"
-    },
-    "action": {
-        "default_icon": {
-            "16": "icons/icon16.png",
-            "32": "icons/icon32.png",
-            "48": "icons/icon48.png",
-            "64": "icons/icon64.png",
-            "128": "icons/icon128.png"
-        },
-        "default_title": "PrivacyRedirect+",
-        "default_popup": "popup.html"
+  },
+  "action": {
+    "default_title": "PrivacyRedirect+",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
+  }
 }
