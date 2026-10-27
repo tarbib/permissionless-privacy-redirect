@@ -5,15 +5,16 @@
   <title>PrivacyRedirect+</title>
   <style>
     :root { color-scheme: light dark; font: 13px/1.4 system-ui, sans-serif; }
-    body { width: 270px; margin: 12px; }
+    body { width: 300px; margin: 12px; }
     h1 { font-size: 15px; margin: 0 0 6px; }
     p { margin: 0 0 8px; opacity: 0.75; }
-    label { display: flex; gap: 8px; padding: 5px 0; }
+    label { display: flex; gap: 8px; padding: 6px 0 2px; font-weight: 600; }
+    #sites input:not([type]) { box-sizing: border-box; width: 100%; font: inherit; }
   </style>
 </head>
 <body>
   <h1>PrivacyRedirect+</h1>
-  <p>Each site is off until you turn it on, which asks your browser for access to that site only. The browser then does the redirect; this extension never sees what you browse.</p>
+  <p>Each site is off until you turn it on, which asks your browser for access to that site only. The browser then redirects it to the instance below; this extension never sees what you browse.</p>
   <div id="sites"></div>
   <script type="module" src="popup.js"></script>
 </body>

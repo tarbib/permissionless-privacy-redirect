@@ -1,33 +1,43 @@
 # PrivacyRedirect+
 
-Redirects YouTube, Reddit, X, Medium, Fandom, Imgur and Stack Overflow to privacy-friendly frontends.
+Redirects YouTube, X, Reddit, Instagram, TikTok, Wikipedia, Medium, Stack Overflow, Imgur, IMDb, Quora, Fandom, Genius, Bandcamp, GitHub and Google Translate to privacy-friendly frontends, on instances you choose.
 
-Private fork of [nzmcno/privacy-redirect-plus](https://github.com/nzmcno/privacy-redirect-plus), rebuilt after farside.link (which every redirect went through) shut down.
+Fork of [nzmcno/privacy-redirect-plus](https://github.com/nzmcno/privacy-redirect-plus), rebuilt after farside.link (which every redirect went through) shut down.
 
 ## How it works
 
-- **No install-time permissions.** Every site starts off. Turning one on in the popup asks the browser for access to that site only; turning it off gives the access back.
-- **The browser does the redirect.** Redirects are [declarativeNetRequest](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest) rules in [rules.json](rules.json), applied before the request leaves your machine, so the original site never receives it. There is no background script: the extension's code never sees a URL.
-- **Only content pages are redirected.** Login, password-reset and other account pages stay on the original site.
+- **No install-time permissions.** Every site starts off. Turning one on asks the browser for access to that site only; turning it off gives the access back.
+- **You choose the instance.** Each site has an instance field in the popup, prefilled where a working public instance was found. Public instances come and go, so change them freely; your own self-hosted one works too.
+- **The browser does the redirect.** Redirects are [declarativeNetRequest](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest) rules, applied before the request leaves your machine, so the original site never receives it. The extension's code never sees a URL.
+- **Only content pages are redirected.** Login, password-reset, OAuth and account pages stay on the original site.
 
-| Site | What gets redirected | Frontend |
-| --- | --- | --- |
-| YouTube | videos, shorts, channels, playlists, search, youtu.be links | [invidious.tiekoetter.com](https://invidious.tiekoetter.com) |
-| Reddit | `/r/…`, `/u/…`, `/user/…` | [safereddit.com](https://safereddit.com) |
-| X / Twitter | posts (`/<user>/status/…`) | [nitter.tiekoetter.com](https://nitter.tiekoetter.com) |
-| Medium | articles | [scribe.rip](https://scribe.rip) |
-| Fandom | wiki pages | [breezewiki.com](https://breezewiki.com) |
-| Imgur | albums, galleries, direct images | [rimgo.privacyredirect.com](https://rimgo.privacyredirect.com) |
-| Stack Overflow | questions | [overflow.hostux.net](https://overflow.hostux.net) |
+| Site | Frontend | What gets redirected | Suggested instance |
+| --- | --- | --- | --- |
+| YouTube | Invidious | videos, shorts, channels, playlists, search, youtu.be links | invidious.tiekoetter.com |
+| X / Twitter | Nitter | posts | nitter.tiekoetter.com |
+| Reddit | Redlib | `/r/`, `/u/`, `/user/` pages | safereddit.com |
+| Instagram | Proxigram | posts, reels, profiles | — |
+| TikTok | ProxiTok | profiles, videos | — |
+| Wikipedia | Wikiless | articles, all languages | wikiless.tiekoetter.com |
+| Medium | Scribe | articles | scribe.rip |
+| Stack Overflow | AnonymousOverflow | questions | overflow.hostux.net |
+| Imgur | Rimgo | albums, galleries, direct images | rimgo.privacyredirect.com |
+| IMDb | libremdb | titles, people | libremdb.pussthecat.org |
+| Quora | Quetre | questions, answers, profiles | — |
+| Fandom | BreezeWiki | wiki pages | breezewiki.com |
+| Genius | Dumb | lyrics | — |
+| Bandcamp | Tent | artists, albums, tracks | tent.sny.sh |
+| GitHub | GotHub | repositories and files | gothub.r4fo.com |
+| Google Translate | SimplyTranslate | opens the translator (your text isn't carried over) | simplytranslate.org |
 
-Public instances come and go. To use another one (or your own), change its address in `rules.json` and reload the extension.
+"—" means no working public instance was found when this list was made (October 2026): enter one to use that site.
 
 ## Install
 
 1. Open `brave://extensions` (or `chrome://extensions`) and turn on **Developer mode**.
 2. Click **Load unpacked** and select this folder.
-3. Click the toolbar icon and switch on the sites you want.
+3. Click the toolbar icon, check the instances, and switch on the sites you want.
 
 ## Adding a site
 
-Add a rule to `rules.json`, its hosts to `optional_host_permissions` in `manifest.json`, and a line to `SITES` in `popup.js`.
+Add an entry to `SITES` in `sites.js`, and its hosts to `optional_host_permissions` in `manifest.json`.
