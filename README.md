@@ -15,6 +15,14 @@ The link opens directly on the frontend, so the original site is never contacted
 
 Automatic redirects can't work without permissions: a browser only lets an extension act on sites it has access to.
 
+## Automatic redirects in Brave
+
+Brave can run small scripts on pages by itself (custom scriptlets, Brave 1.75+), which gets you automatic redirects while the extension keeps no permissions. Click **Redirect clicked links automatically (Brave)** in the popup: it builds a script and a filter rule from your settings and explains where to paste them in `brave://settings/shields/filters`.
+
+- Links you click on common search engines (DuckDuckGo, Google, Bing, Brave Search, Startpage, Ecosia, Kagi) are rewritten before the original site is contacted.
+- Pages on a supported site that you open some other way, such as from another app, switch to the frontend as soon as they start loading, so that site still sees the first request.
+- Only content pages are converted, so you can still sign in to the original sites. Update the script after changing your instances.
+
 ## Instances
 
 Each site in the popup has an on/off checkbox and an instance field, prefilled where a working public instance was found. Public instances come and go, so change them freely; your own self-hosted one works too. Turning a site off keeps its instance for when you turn it back on.

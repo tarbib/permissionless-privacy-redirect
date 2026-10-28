@@ -158,3 +158,45 @@ export function saveSettings({ instances, off }) {
 export function activeInstances({ instances, off }) {
   return Object.fromEntries(SITES.map((site) => [site.id, off.has(site.id) ? '' : instances[site.id]]));
 }
+
+// Brave can run a small script on pages (Shields > Content filtering > Custom
+// scriptlets), which an extension without permissions can't. This builds one
+// from your settings: on other pages it rewrites links to supported sites as
+// you click them, so the original site is never contacted; on a supported site
+// itself it moves to the frontend as the page starts loading. Only content
+// pages are converted, so account pages keep working.
+export function braveScriptlet(settings) {
+  const instances = activeInstances(settings);
+  const rules = SITES.filter((site) => instances[site.id]).flatMap((site) => site.redirects.map(
+    ([regex, path]) => [regex, instances[site.id] + path.replace(/\\(\d)/g, '$$$1'), site.keep ?? []]));
+  return `(() => {
+  const rules = ${JSON.stringify(rules)};
+  const convert = (href) => {
+    for (const [regex, target, keep] of rules) {
+      const re = new RegExp(regex, 'i');
+      if (re.test(href) && !keep.some((k) => new RegExp(k, 'i').test(href))) return href.replace(re, target);
+    }
+    return null;
+  };
+  const here = convert(location.href);
+  if (here) return location.replace(here);
+  const rewrite = (event) => {
+    const link = event.target.closest && event.target.closest('a[href]');
+    const target = link && convert(link.href);
+    if (target) link.href = target;
+  };
+  addEventListener('click', rewrite, true);
+  addEventListener('auxclick', rewrite, true);
+})();
+`;
+}
+
+// Brave filter rules must name the sites they apply to: common search engines,
+// whose result links get rewritten, plus the supported sites themselves.
+const SEARCH_ENGINES = ['duckduckgo.com', 'google.com', 'bing.com', 'search.brave.com', 'startpage.com', 'ecosia.org', 'kagi.com'];
+
+export function braveRule(settings) {
+  const instances = activeInstances(settings);
+  const sites = SITES.filter((site) => instances[site.id]).flatMap((site) => site.hosts.map((host) => host.replace(/^\*\./, '')));
+  return `${[...new Set([...SEARCH_ENGINES, ...sites])].join(',')}##+js(user-permissionless-redirect.js)`;
+}

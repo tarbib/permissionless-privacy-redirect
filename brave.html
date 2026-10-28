@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Automatic redirects in Brave</title>
+  <style>
+    :root { color-scheme: light dark; font: 14px/1.5 system-ui, sans-serif; }
+    body { max-width: 720px; margin: 2em auto; padding: 0 16px; }
+    li { margin: 0 0 1.2em; }
+    textarea { box-sizing: border-box; display: block; width: 100%; margin: 6px 0; font: 12px/1.4 ui-monospace, Menlo, monospace; }
+  </style>
+</head>
+<body>
+  <h1>Automatic redirects in Brave</h1>
+  <p>This extension can't see the links you click, but Brave itself can run a small script on pages. Set it up once and links to the sites you've turned on open on their frontend automatically. The extension still has no permissions.</p>
+  <ol>
+    <li>Open <b>brave://settings/shields/filters</b> and turn on <b>Developer mode</b> at the bottom of the page.</li>
+    <li>Under <b>Custom scriptlets</b>, click <b>Add new scriptlet</b>. Name it <code>permissionless-redirect.js</code> (Brave adds <code>user-</code> in front), paste this and click <b>Save</b>:
+      <textarea id="scriptlet" rows="10" readonly></textarea>
+      <button data-copy="scriptlet">Copy script</button></li>
+    <li>In the custom filters box on the same page, add this line and click <b>Save changes</b>:
+      <textarea id="rule" rows="3" readonly></textarea>
+      <button data-copy="rule">Copy rule</button></li>
+  </ol>
+  <p>Links you click on those search engines are rewritten before the original site is contacted. Pages on a supported site that you open some other way, such as from another app, switch to the frontend as soon as they start loading, so that site still sees the first request. Come back here and update both after changing your instances.</p>
+  <script type="module" src="brave.js"></script>
+</body>
+</html>

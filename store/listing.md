@@ -24,6 +24,9 @@ Most redirect extensions ask to "read and change your data" on the sites they re
 
 The link opens directly on the frontend, so the original site is never contacted.
 
+ON BRAVE: AUTOMATIC REDIRECTS
+Brave can run small scripts on pages by itself. The popup builds one from your settings, so links you click on search engines open on their frontend automatically, still without giving the extension any permissions.
+
 SUPPORTED SITES
 • YouTube → Invidious
 • X / Twitter → Nitter
@@ -67,5 +70,5 @@ Not affiliated with any of the sites or frontends listed.
 ## Package
 
 ```sh
-zip -r permissionless-privacy-redirect.zip manifest.json background.js sites.js popup.html popup.js go.html go.js icons -x icons/logo.svg
+zip -r permissionless-privacy-redirect.zip manifest.json background.js sites.js popup.html popup.js go.html go.js brave.html brave.js icons -x icons/logo.svg
 ```
