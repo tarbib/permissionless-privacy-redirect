@@ -1,163 +1,58 @@
-# PrivacyRedirect+
+# Permissionless Privacy Redirect
 
-<p align="center">
-  <img src="icons/icon128.png" alt="PrivacyRedirect+ Logo" width="128" height="128">
-</p>
+Opens YouTube, X, Reddit, Instagram, TikTok, Wikipedia, Medium, Stack Overflow, Imgur, IMDb, Quora, Fandom, Genius, Bandcamp, GitHub and Google Translate links in privacy-friendly frontends, on instances you choose. **It requires no permissions.**
 
-<p align="center">
-  A Chrome extension that automatically redirects popular websites to privacy-respecting alternatives via <a href="https://farside.link">farside.link</a>.
-</p>
+Fork of [nzmcno/privacy-redirect-plus](https://github.com/nzmcno/privacy-redirect-plus), rebuilt after farside.link (which every redirect went through) shut down.
 
-<p align="center">
-  <a href="https://github.com/nzmcno/PrivacyRedirectPlus/stargazers"><img src="https://img.shields.io/github/stars/nzmcno/PrivacyRedirectPlus" alt="GitHub stars"></a>
-  <a href="https://github.com/nzmcno/PrivacyRedirectPlus/issues"><img src="https://img.shields.io/github/issues/nzmcno/PrivacyRedirectPlus" alt="GitHub issues"></a>
-  <a href="https://github.com/nzmcno/PrivacyRedirectPlus/blob/main/LICENSE"><img src="https://img.shields.io/github/license/nzmcno/PrivacyRedirectPlus" alt="License"></a>
-</p>
+## How it works
 
-## 💾 Installation
+With no permissions, the extension can't see your tabs, your browsing or any page. So instead of redirecting on its own, it opens the links you give it:
 
-<p align="center">
-  <a href="https://chromewebstore.google.com/detail/privacyredirect+/hgddaoemcmlgbhjcnolmdnhfmmpblihf"><img src="https://img.shields.io/badge/Chrome-Get_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Chrome Web Store"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Firefox-Get_Add--on-FF7139?style=for-the-badge&logo=firefox-browser&logoColor=white" alt="Firefox Add-ons"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Edge-Get_Extension-0078D7?style=for-the-badge&logo=microsoft-edge&logoColor=white" alt="Edge Add-ons"></a>
-</p>
+- **Address bar:** type `pr`, a space and a link (for example `pr youtube.com/watch?v=…`), then press Enter.
+- **Popup:** paste a link and press Enter.
 
-## 💖 Support the Project
+The link opens directly on the frontend, so the original site is never contacted. Content links (videos, posts, articles…) open the same page on the frontend. Any other link to a supported site (login, password reset, account pages) opens the frontend's home page, so tokens in those links aren't passed on.
 
-If you find PrivacyRedirect+ useful, consider supporting its development:
+Automatic redirects can't work without permissions: a browser only lets an extension act on sites it has access to.
 
-<p align="center">
-  <a href="https://www.buymeacoffee.com/nzmcno" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-</p>
+## Instances
 
-<p align="center">
-  <strong>Cryptocurrency Donations:</strong><br>
-  Bitcoin (BTC): <code>bc1qj629vmsvm0jv2jej582u95wftnxyfdqe6almfg</code><br>
-  Ethereum (ETH): <code>0x6B675217f30BdBF5aB56b0f8fb696C28a0c74311</code><br>
-  Solana (SOL): <code>FsqY73gKLpadjKiiBQYodPCEL66R9vxZUBiNKpMc3RtA</code>
-</p>
+Each site in the popup has an on/off checkbox and an instance field, prefilled where a working public instance was found. Public instances come and go, so change them freely; your own self-hosted one works too. Turning a site off keeps its instance for when you turn it back on.
 
-## 🚀 Features
+| Site | Frontend | Opens as the same page | Suggested instance |
+| --- | --- | --- | --- |
+| YouTube | Invidious | videos, shorts, channels, playlists, search, youtu.be links | invidious.tiekoetter.com |
+| X / Twitter | Nitter | posts, profiles | nitter.tiekoetter.com |
+| Reddit | Redlib | `/r/`, `/u/`, `/user/` pages | safereddit.com |
+| Instagram | Proxigram | posts, reels, profiles | — |
+| TikTok | ProxiTok | profiles, videos | — |
+| Wikipedia | Wikiless | articles, all languages | wikiless.tiekoetter.com |
+| Medium | Scribe | articles | scribe.rip |
+| Stack Overflow | AnonymousOverflow | questions | overflow.hostux.net |
+| Imgur | Rimgo | albums, galleries, direct images | rimgo.privacyredirect.com |
+| IMDb | libremdb | titles, people | libremdb.pussthecat.org |
+| Quora | Quetre | questions, answers, profiles | — |
+| Fandom | BreezeWiki | wiki pages | breezewiki.com |
+| Genius | Dumb | lyrics | — |
+| Bandcamp | Tent | artists, albums, tracks | tent.sny.sh |
+| GitHub | GotHub | repositories and files | gothub.r4fo.com |
+| Google Translate | SimplyTranslate | opens the translator (your text isn't carried over) | simplytranslate.org |
 
-- **Automatic Redirects:** Seamlessly redirects major platforms to privacy-friendly alternatives
-- **Highly Customizable:** Enable/disable redirects globally or on a per-site basis
-- **Quick Access Panel:** Easily access all supported privacy frontends with one click
-- **Clean UI:** Simple, intuitive interface with categorized services
-- **No Tracking:** Zero data collection, completely respects your privacy
+"—" means no working public instance was found when this list was made (October 2026): enter one to use that site.
 
-## 🔄 Supported Redirects
+## Install
 
-| Platform         | Redirects to      | Description                         |
-| ---------------- | ----------------- | ----------------------------------- |
-| YouTube          | Invidious         | Privacy-respecting YouTube frontend |
-| Twitter/X        | Nitter            | Lightweight Twitter frontend        |
-| Reddit           | Libreddit         | Private Reddit frontend             |
-| Instagram        | Proxigram         | Privacy-focused Instagram viewer    |
-| TikTok           | ProxiTok          | Private TikTok frontend             |
-| StackOverflow    | AnonymousOverflow | Private StackOverflow viewer        |
-| Wikipedia        | Wikiless          | Privacy-focused Wikipedia frontend  |
-| GitHub           | GotHub            | Alternative GitHub frontend         |
-| Medium           | Scribe            | Medium without the clutter          |
-| Quora            | Quetre            | Quora without tracking              |
-| Imgur            | Rimgo             | Privacy-friendly Imgur frontend     |
-| IMDB             | LibreMDB          | Alternative IMDB frontend           |
-| Google Translate | SimplyTranslate   | Privacy-respecting translator       |
-| Fandom           | BreezeWiki        | Better Fandom experience            |
-| Genius           | Dumb              | Clean, fast lyrics site             |
-| Bandcamp         | Tent              | Alternative Bandcamp frontend       |
+1. Open `brave://extensions` (or `chrome://extensions`) and turn on **Developer mode**.
+2. Click **Load unpacked** and select this folder.
 
-## 🔎 Quick Access Services
+## Adding a site
 
-PrivacyRedirect+ provides quick access to various privacy-focused services:
+Add an entry to `SITES` in `sites.js`.
 
-### Search
+## Disclaimer
 
-- Whoogle - Privacy-respecting Google search
-- SearX/SearXNG - Metasearch engine
-- 4get - Privacy-oriented search engine
-- Librey - Open search engine
+Not affiliated with YouTube, X, Reddit or any other site listed here. Frontends are run by third parties unless you host them yourself: they may go down, change, or log what you view, and using them may break some sites' terms of service. This makes your browsing more private, not anonymous.
 
-### Translation
+## License
 
-- Lingva - Private translation service
-- SimplyTranslate - Simple translation alternative
-
-### Social Media
-
-- Nitter - Twitter frontend
-- Libreddit/Redlib/Teddit - Reddit frontends
-- Proxigram - Instagram frontend
-- ProxiTok - TikTok frontend
-
-### Other Services
-
-- Gothub - GitHub frontend
-- Wikiless - Wikipedia frontend
-- Scribe - Medium frontend
-- Rimgo - Imgur frontend
-- BreezeWiki - Fandom frontend
-- Dumb - Genius.com frontend
-- Tent - Bandcamp frontend
-- LibreMDB - IMDB frontend
-- Quetre - Quora frontend
-- AnonymousOverflow - StackOverflow frontend
-
-## 📦 Manual Installation
-
-1. Download or clone this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top-right corner
-4. Click "Load unpacked" and select the `PrivacyRedirectPlus` folder
-5. The extension is now installed and ready to use!
-
-### From Chrome Web Store
-
-_(Coming Soon)_
-
-## 🔧 Usage
-
-1. Click the PrivacyRedirect+ icon in your browser toolbar
-2. Use the main toggle to enable/disable all redirects
-3. Toggle individual sites on/off as needed
-4. Access the "Quick Access" tab for direct links to privacy services
-
-## ⚙️ Configuration
-
-PrivacyRedirect+ can be configured through:
-
-- The popup interface (quick toggles)
-- The options page (full settings)
-
-To access the options page, either:
-
-- Click the "Settings" button in the popup
-- Right-click the extension icon and select "Options"
-
-## 🔒 Privacy
-
-PrivacyRedirect+ is designed with privacy in mind:
-
-- No data collection
-- No analytics
-- No external requests (except those initiated by you)
-- All settings stored locally in your browser
-
-For more details, see our [Privacy Policy](PRIVACY.md).
-
-## ⚠️ Disclaimer
-
-Please note that PrivacyRedirect+ is not affiliated with any of the websites it redirects to or from. We cannot guarantee the availability or privacy practices of third-party services. See our [Disclaimer](DISCLAIMER.md) for more information.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+[MIT](LICENSE)
